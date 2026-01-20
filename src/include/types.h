@@ -7,6 +7,7 @@
 struct Rect
 {
     int x, y, w, h;
+    unsigned char r, g, b, a;
 };
 
 

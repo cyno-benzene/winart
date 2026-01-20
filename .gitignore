@@ -1,6 +1,9 @@
 .vscode
 *.exe
 .virtualenv
+*.mp4
 
+__pycache__
+*.csv
 *.md
 !README.md
