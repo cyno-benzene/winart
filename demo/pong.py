@@ -27,16 +27,17 @@ ball_dy = BALL_SPEED_Y
 def get_game_rects():
     # Efficiently create NumPy array for 3 windows with color support
     rect_data = np.zeros(3, dtype=[('x', 'i4'), ('y', 'i4'), ('w', 'i4'), ('h', 'i4'),
-                                   ('r', 'u1'), ('g', 'u1'), ('b', 'u1'), ('a', 'u1')])
+                                   ('r', 'u1'), ('g', 'u1'), ('b', 'u1'), ('a', 'u1'),
+                                   ('layer_id', 'i4')])
     
     # Paddle 1 (Left) - Green
-    rect_data[0] = (50, int(p1_y), PADDLE_WIDTH, PADDLE_HEIGHT, 0, 255, 0, 255)
+    rect_data[0] = (50, int(p1_y), PADDLE_WIDTH, PADDLE_HEIGHT, 0, 255, 0, 255, 0)
     
     # Paddle 2 (Right) - Red
-    rect_data[1] = (SCREEN_WIDTH - 50 - PADDLE_WIDTH, int(p2_y), PADDLE_WIDTH, PADDLE_HEIGHT, 255, 0, 0, 255)
+    rect_data[1] = (SCREEN_WIDTH - 50 - PADDLE_WIDTH, int(p2_y), PADDLE_WIDTH, PADDLE_HEIGHT, 255, 0, 0, 255, 0)
     
     # Ball - Yellow
-    rect_data[2] = (int(ball_x), int(ball_y), BALL_SIZE, BALL_SIZE, 255, 255, 0, 255)
+    rect_data[2] = (int(ball_x), int(ball_y), BALL_SIZE, BALL_SIZE, 255, 255, 0, 255, 0)
     
     return rect_data
 

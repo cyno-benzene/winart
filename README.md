@@ -31,6 +31,8 @@ python handles the logic layer for animations, physics and image processing.
 python -m demo.pong
 
 python -m demo.clock
+
+python -m demo.clippy --sheet demo/assets/clippy_hd.png --width 120 --height 96 --pixel-size 10 --scale 1.0 --pool 800 --colors 8
 ```
 
 ## contributing
