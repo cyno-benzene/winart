@@ -18,7 +18,7 @@ private:
 
     std::vector<WindowState> windowPool;
     std::map<int, LayerConfig> layers;
-    std::deque<MouseEvent> eventQueue;
+    std::deque<EngineEvent> eventQueue;
     CRITICAL_SECTION eventCs;
     
     HINSTANCE hInst;
@@ -42,7 +42,7 @@ private:
     void MessagePump();
     void CreatePoolWindows(int count);
     void DestroyPoolWindows();
-    void PushEvent(const MouseEvent& ev);
+    void PushEvent(const EngineEvent& ev);
 
 public:
     WindowEngine();
@@ -52,7 +52,7 @@ public:
     void render_raw(Rect* rects, int count);
     void render_layer(int layerId, Rect* rects, int count);
     
-    int poll_events(MouseEvent* outEvents, int maxCount);
+    int poll_events(EngineEvent* outEvents, int maxCount);
     
     void set_layer_config(const LayerConfig& config);
     void set_transparency(bool enable, unsigned char r, unsigned char g, unsigned char b);

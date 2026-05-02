@@ -29,14 +29,16 @@ struct Frame
 enum EventType {
     MOUSE_DOWN = 1,
     MOUSE_UP = 2,
-    MOUSE_MOVE = 3
+    MOUSE_MOVE = 3,
+    KEY_DOWN = 4,
+    KEY_UP = 5
 };
 
-struct MouseEvent {
+struct EngineEvent {
     int type;
     int x;
     int y;
-    int button; // 0 for left, 1 for right, etc.
+    int button; // Mouse button OR key code
 };
 
 #endif

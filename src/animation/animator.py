@@ -27,6 +27,45 @@ class Animator:
     def get_sprite(self, name: str) -> Sprite:
         return self.sprites.get(name) # type: ignore
 
+    def step(self, dt: float):
+        """Perform a single frame update and render."""
+        # Poll events from engine
+        events = self.engine.poll_events()
+        has_input = len(events) > 0
+        for event in events:
+            # Dispatch to sprites (in reverse order for correct click layering)
+            for sprite in reversed(list(self.sprites.values())):
+                if sprite.visible:
+                    if sprite.handle_event(event, pixel_size=self.pixel_size):
+                        break # Event consumed
+        
+        # Update all sprites and check if any are active
+        for sprite in self.sprites.values():
+            sprite.update(dt)
+        
+        # Render loop
+        layer_rects: Dict[int, List[np.ndarray]] = {}
+        for sprite in self.sprites.values():
+            if sprite.visible:
+                rects = sprite.to_rects(pixel_size=self.pixel_size)
+                if rects.size > 0:
+                    layer_id = sprite.layer_id
+                    if layer_id not in layer_rects:
+                        layer_rects[layer_id] = []
+                    layer_rects[layer_id].append(rects)
+        
+        all_rect_data = []
+        for layer_id in sorted(layer_rects.keys()):
+            all_rect_data.extend(layer_rects[layer_id])
+        
+        if all_rect_data:
+            full_rect_data = np.concatenate(all_rect_data)
+            self.engine.render(full_rect_data)
+        else:
+            self.engine.render([])
+        
+        return has_input
+
     def run(self):
         """
         Main animation loop. This is a blocking call.

@@ -1,6 +1,6 @@
 # winart
 
-A window manipulation engine which treats native popup windows API as individual pixels to change their state in real time like typical pixels to create animations, games and desktop utilities or companions(future scope). 
+A window manipulation engine which treats native popup windows API as individual pixels to change their state in real time like typical pixels to create animations, games and desktop utilities or companions(in progress). 
 
 ![Demo](demo/demo.gif)
 

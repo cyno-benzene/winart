@@ -136,7 +136,7 @@ LRESULT CALLBACK WindowEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, L
             POINT pt;
             GetCursorPos(&pt);
             
-            MouseEvent ev;
+            EngineEvent ev;
             if (uMsg == WM_LBUTTONDOWN) ev.type = MOUSE_DOWN;
             else if (uMsg == WM_LBUTTONUP) ev.type = MOUSE_UP;
             else ev.type = MOUSE_MOVE;
@@ -144,6 +144,14 @@ LRESULT CALLBACK WindowEngine::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, L
             ev.x = pt.x;
             ev.y = pt.y;
             ev.button = 0; // Left
+            
+            pEngine->PushEvent(ev);
+        } else if (uMsg == WM_KEYDOWN || uMsg == WM_KEYUP) {
+            EngineEvent ev;
+            ev.type = (uMsg == WM_KEYDOWN) ? KEY_DOWN : KEY_UP;
+            ev.x = 0;
+            ev.y = 0;
+            ev.button = (int)wParam; // Key code
             
             pEngine->PushEvent(ev);
         }
@@ -248,14 +256,14 @@ void WindowEngine::close() {
     }
 }
 
-void WindowEngine::PushEvent(const MouseEvent& ev) {
+void WindowEngine::PushEvent(const EngineEvent& ev) {
     EnterCriticalSection(&eventCs);
     if (eventQueue.size() > 1000) eventQueue.pop_front();
     eventQueue.push_back(ev);
     LeaveCriticalSection(&eventCs);
 }
 
-int WindowEngine::poll_events(MouseEvent* outEvents, int maxCount) {
+int WindowEngine::poll_events(EngineEvent* outEvents, int maxCount) {
     EnterCriticalSection(&eventCs);
     int count = std::min((int)eventQueue.size(), maxCount);
     for (int i = 0; i < count; i++) {

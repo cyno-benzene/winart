@@ -19,7 +19,7 @@ class Rect(Structure):
     ("layer_id", c_int),
 ]
 
-class MouseEvent(Structure):
+class EngineEvent(Structure):
     _fields_ = [
         ("type", c_int),
         ("x", c_int),
@@ -31,6 +31,8 @@ class MouseEvent(Structure):
 MOUSE_DOWN = 1
 MOUSE_UP = 2
 MOUSE_MOVE = 3
+KEY_DOWN = 4
+KEY_UP = 5
 
 class WindowEngine:
     def __init__(self, dll_path=None, pool_size=500):
@@ -63,7 +65,7 @@ class WindowEngine:
         self.lib.SetLayerConfig.argtypes = [c_int, c_int, c_bool]
         self.lib.SetTransparencyMode.argtypes = [c_bool, c_ubyte, c_ubyte, c_ubyte]
         self.lib.GrowPool.argtypes = [c_int]
-        self.lib.PollEvents.argtypes = [POINTER(MouseEvent), c_int]
+        self.lib.PollEvents.argtypes = [POINTER(EngineEvent), c_int]
         self.lib.PollEvents.restype = c_int
         self.lib.CloseEngine.argtypes = []
 
@@ -80,9 +82,9 @@ class WindowEngine:
     def poll_events(self, max_count=64):
         """
         Poll for input events from the engine.
-        Returns a list of MouseEvent objects.
+        Returns a list of EngineEvent objects.
         """
-        event_array = (MouseEvent * max_count)()
+        event_array = (EngineEvent * max_count)()
         count = self.lib.PollEvents(event_array, max_count)
         return [event_array[i] for i in range(count)]
 

@@ -56,7 +56,7 @@ extern "C"
         }
     }
     
-    __declspec(dllexport) int PollEvents(MouseEvent* outEvents, int maxCount)
+    __declspec(dllexport) int PollEvents(EngineEvent* outEvents, int maxCount)
     {
         if (g_engine != nullptr)
         {
